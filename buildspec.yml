@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+        - pip install --upgrade awscli
+        - pip install --upgrade python-lambda
+  pre_build:
+    commands:
+      - echo Fetching environment variables...
+      - REPO=`basename ${CODEBUILD_SOURCE_REPO_URL} .git`
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-8)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - echo REPO=${REPO}
+      - echo REPO=${COMMIT_HASH}
+      - echo REPO=${IMAGE_TAG}
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the lambda dist package...  
+      - lambda build --requirements requirements.txt
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing lambda function to S3...
+      - aws s3 cp dist/*.zip s3://pipeline.poc/lambda/${REPO}/latest.zip
+      - aws s3 cp dist/*.zip s3:pipeline.poc/lambda/${REPO}/${IMAGE_TAG}.zip
