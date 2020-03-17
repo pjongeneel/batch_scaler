@@ -1,0 +1,16 @@
+region: us-west-1
+function_name: batch_scaler
+handler: service.handler
+description: Scale batch compute environments down when mincpus != desiredcpus
+runtime: python3.8
+# role: lambda_basic_execution
+bucket_name: 'pipeline.poc'
+s3_key_prefix: 'lambda/testfunc/'
+dist_directory: dist
+timeout: 60
+memory_size: 128
+concurrency: 1
+requirements: 'requirements.txt'
+# Build options
+# build:
+  # source_directories: lib # a comma delimited list of directories in your project root that contains source to package.
