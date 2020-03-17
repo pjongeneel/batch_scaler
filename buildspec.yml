@@ -14,8 +14,8 @@ phases:
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-8)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
       - echo REPO=${REPO}
-      - echo REPO=${COMMIT_HASH}
-      - echo REPO=${IMAGE_TAG}
+      - echo COMMIT_HASH=${COMMIT_HASH}
+      - echo IMAGE_TAG=${IMAGE_TAG}
   build:
     commands:
       - echo Build started on `date`
@@ -26,4 +26,4 @@ phases:
       - echo Build completed on `date`
       - echo Pushing lambda function to S3...
       - aws s3 cp dist/*.zip s3://pipeline.poc/lambda/${REPO}/latest.zip
-      - aws s3 cp dist/*.zip s3:pipeline.poc/lambda/${REPO}/${IMAGE_TAG}.zip
+      - aws s3 cp dist/*.zip s3://pipeline.poc/lambda/${REPO}/${IMAGE_TAG}.zip
