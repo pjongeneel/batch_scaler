@@ -5,8 +5,6 @@ runtime: python3.8
 timeout: 60
 memory_size: 128
 concurrency: 1
-bucket_name: 'pipeline.poc'
-s3_key_prefix: 'lambda/testfunc/'
 
 # Build options
 dist_directory: dist

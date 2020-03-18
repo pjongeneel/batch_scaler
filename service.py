@@ -67,11 +67,12 @@ def handler(event, context):
                 client=client,
                 arn=env['computeEnvironmentArn']
             )
-            assert success
+            assert success, "Could not successfully disable {0}".format(env['computeEnvironmentArn'])
             success = enable_compute_environment(
                 client=client,
                 arn=env['computeEnvironmentArn'],
                 cpus=env['computeResources']['minvCpus']
             )
-            assert success
+            assert success, "Could not successfully enable {0}".format(env['computeEnvironmentArn'])
+    print("Finished successfully!")
     return
